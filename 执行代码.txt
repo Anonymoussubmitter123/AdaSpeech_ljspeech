@@ -1,0 +1,9 @@
+CUDA_VISIBLE_DEVICES=2 python3 train.py -p config//LJSpeech/preprocess.yaml -m config/LJSpeech/model.yaml -t config/LJSpeech/train.yaml
+
+pip install tensorflow-gpu==2.5 -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install -r bao.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+watch -n 1 nvidia-smi
+
+python synthesize_lj.py --text "Proper hours for locking and unlocking prisoners should be insisted upon." --restore_step 100000 --reference_audio ref_audio/LJ001-0001.wav --mode single -p config/LJSpeech/preprocess.yaml -m config/LJSpeech/model.yaml -t config/LJSpeech/train.yaml
+
+CUDA_VISIBLE_DEVICES=2 python3 train.py -p config//LJSpeech/preprocess.yaml -m config/LJSpeech/model.yaml -t config/LJSpeech/train.yaml --vocoder_checkpoint vocoder/generator_universal.pth.tar --vocoder_config vocoder/config/config_v1.json
